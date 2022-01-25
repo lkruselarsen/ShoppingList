@@ -7,7 +7,7 @@ const SearchBar = ({ keyword, setKeyword, onChange }) => {
       <input
         className="SearchBar"
         key="random1"
-        placeholder={"search for product"}
+        placeholder={"🔍  search for product"}
         onChange={onChange}
       />
     </StyledSearchBar>

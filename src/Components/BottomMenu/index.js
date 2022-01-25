@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyledBottomMenu } from "./styles.js";
+import { StyledBottomMenu, StyledToggle, StyledExpanded } from "./styles.js";
 import { Product, SearchBar } from "../../Components";
 
 const BottomMenu = (props) => {
@@ -10,12 +10,9 @@ const BottomMenu = (props) => {
       <StyledBottomMenu>
         <div className="List BottomList">
           <div className="ButtonHolder">
-            <button
-              className="ToggleCollapseExpanded"
-              onClick={() => setCount(count - 1)}
-            >
-              Collapse
-            </button>
+            <StyledExpanded onClick={() => setCount(count - 1)}>
+              ➖
+            </StyledExpanded>
 
             <SearchBar
               keyword={props.keyword}
@@ -40,6 +37,7 @@ const BottomMenu = (props) => {
                     price={prodObj.price}
                     checked={prodObj.packed}
                     deleteProduct={props.deleteProduct(prodObj.id)}
+                    
                   />
                 );
               }
@@ -55,12 +53,7 @@ const BottomMenu = (props) => {
         {" "}
         <div className="List CollapsedBottomList">
           <div className="CollapsedButtonHolder">
-            <button
-              className="ToggleCollapseCollapsed"
-              onClick={() => setCount(count + 1)}
-            >
-              Expand Products
-            </button>
+            <StyledToggle onClick={() => setCount(count + 1)}>🔍</StyledToggle>
           </div>
         </div>
       </StyledBottomMenu>

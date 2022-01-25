@@ -6,6 +6,7 @@ import CheckBox from "./CheckBox.js";
 
 const Product = (props) => {
   const toggleCheck = (e) => {
+    // const newProducts = props.products.push(e);
     const newProducts = props.products.map((el) => {
       if (el.id === props.id) {
         return { ...el, packed: !props.checked };

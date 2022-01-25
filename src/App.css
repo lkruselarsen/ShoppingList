@@ -18,12 +18,14 @@
 }
 
 #button {
-  padding: 4px;
+  padding: 8px;
   position: absolute;
 
   right: 10px;
   top: 10px;
   z-index: 1;
+  border-style: none;
+  border-radius: 5px;
 }
 .ButtonArea {
   padding: 4px;
@@ -127,7 +129,7 @@
 }
 .CardTitle {
   flex-wrap: nowrap;
-  color: #0c0d27;
+  color: aliceblue;
   font-weight: 600;
   font-size: medium;
   width: 100%;
@@ -145,6 +147,7 @@
   display: flex;
   justify-content: center;
   border-radius: 8px;
+
   width: auto;
 }
 
@@ -246,7 +249,7 @@ Check:checked:active {
 }
 .SubCard {
   width: auto;
-  background: #264086;
+  background: aliceblue;
   margin: 10px;
   padding: 4px 30px 20px 30px;
   border-radius: 8px;
@@ -288,27 +291,91 @@ Check:checked:active {
   left: 25%;
 }
 .ToggleAddNew {
-  width: 10%;
-  font-size: small;
+  padding: 4px 8px 4px 8px;
+  font-size: medium;
   font-weight: 600;
   position: fixed;
   top: 0.5rem;
   left: 0.5rem;
 }
 .ToggleAddNewExpanded {
-  padding: 4px;
+  padding: 4px 8px 4px 8px;
   position: absolute;
-
+  font-weight: 600;
+  font-size: medium;
   right: 10px;
   top: 10px;
   z-index: 1;
 }
 .SearchBar {
+  width: 12rem;
+  margin-bottom: -2rem;
+  -webkit-appearance: none;
+  background-color: transparent;
+  font-size: 13pt;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding: 8px;
+  color: aliceblue;
 }
 .GreenProduct {
   background-color: #c7ffe1;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  background-color: transparent;
+  margin: 0;
+}
+input[type="text"] {
+  -webkit-appearance: none;
+  background-color: transparent;
+  font-size: 13pt;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding: 8px;
+}
+input[type="submit"] {
+  -webkit-appearance: none;
+  background-color: transparent;
+  padding: 8px;
+  font-size: 14pt;
+}
+
+.number-input {
+  position: relative;
+  background-color: transparent;
+  width: full;
+  font-size: 16pt;
+}
+
+input {
+  border-style: none;
+}
+
+.spinners {
+  position: relative;
+
+  flex-direction: row;
+  width: full;
+
+  margin: 1px 1px 1px 1px;
+}
+.spinner.decrement {
+  font-size: 1.2rem;
+  position: relative;
+  flex-direction: row;
+  width: full;
+  border-style: none;
+  margin: 1px 123px 1px 1px;
+  border-radius: 20%;
+}
+.spinner.increment {
+  font-size: 1.2rem;
+  border-style: none;
+  border-radius: 20%;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

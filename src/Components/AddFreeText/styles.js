@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledAddNew = styled.div`
+export const StyledAddFreeText = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
@@ -37,14 +37,14 @@ export const StyledToggle = styled.button`
 `;
 
 export const StyledToggleExpanded = styled.button`
-  padding: 4px 8px 4px 8px;
+  padding: 6px 8px 6px 8px;
   position: absolute;
   font-weight: 600;
   background: rgba(249, 249, 249, 0.9);
   font-size: 16pt;
   border-style: none;
   border-radius: 50%;
-  right: 10px;
-  top: 10px;
+  right: 0px;
+  top: 60px;
   z-index: 1;
 `;

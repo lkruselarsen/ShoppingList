@@ -6,8 +6,11 @@ import Product from "./Product";
 import Card from "./Card";
 import BottomMenu from "./BottomMenu";
 import AddNew from "./AddNew";
+import AddFreeText from "./AddFreeText";
 import SearchBar from "./SearchBar";
 import CheckMark from "./CheckMark";
+import AmountLabel from "./AmountLabel";
+import InputNumber from "./InputNumber";
 
 export {
   NameLabel,
@@ -20,4 +23,7 @@ export {
   BottomMenu,
   AddNew,
   SearchBar,
+  AmountLabel,
+  InputNumber,
+  AddFreeText,
 };

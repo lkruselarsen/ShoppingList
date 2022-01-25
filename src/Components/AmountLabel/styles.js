@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const StyledPriceLabel = styled.div`
+export const StyledAmountLabel = styled.div`
   font-size: 15px;
   font-weight: bold;
   color: #202164;
 `;
-export const StyledPrice = styled.div`
+export const StyledAmount = styled.div`
   font-size: 22px;
   font-weight: bold;
   color: #202164;
