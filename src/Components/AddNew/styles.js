@@ -27,7 +27,7 @@ export const StyledToggle = styled.button`
   -webkit-appearance: none;
   padding: 4px 8px 4px 8px;
   font-size: 16pt;
-  background: rgba(249, 249, 249, 0.9);
+  background: rgba(111, 111, 111, 0.9);
   font-weight: 600;
   position: fixed;
   border-radius: 50%;
