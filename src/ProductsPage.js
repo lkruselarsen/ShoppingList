@@ -56,7 +56,8 @@ const ProductsPage = (props) => {
   const handleSubmitMany = (event) => {
     event.preventDefault();
 
-    const manyProducts = valueMany.split(", ");
+ //   const manyProducts = valueMany.split(", ");
+ const manyProducts = valueMany.split("\n");
     console.log(manyProducts);
 
     for(const productEntry of manyProducts) {
