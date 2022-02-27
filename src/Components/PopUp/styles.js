@@ -12,6 +12,7 @@ export const StyledPopUp = styled.div`
   position: relative;
   text-color: #ffffff;
   align-items: flex-start;
+
 `;
 export const StyledButton = styled.div`
   display: inline-block;
