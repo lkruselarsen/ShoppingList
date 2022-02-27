@@ -11,6 +11,9 @@ import SearchBar from "./SearchBar";
 import CheckMark from "./CheckMark";
 import AmountLabel from "./AmountLabel";
 import InputNumber from "./InputNumber";
+import ShoppingList from "./ShoppingList";
+import PopUp from "./PopUp";
+import SimpleList from "./SimpleList";
 
 export {
   NameLabel,
@@ -26,4 +29,7 @@ export {
   AmountLabel,
   InputNumber,
   AddFreeText,
+  ShoppingList,
+  PopUp,
+  SimpleList
 };

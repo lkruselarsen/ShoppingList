@@ -12,6 +12,8 @@ import {
   AddNew,
   SearchBar,
   AddFreeText,
+  ShoppingList,
+  PopUp
 } from "./Components";
 
 // import { initializeApp } from 'firebase/app';
@@ -19,7 +21,7 @@ import {
 
 import { getDefaultNormalizer } from "@testing-library/dom";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, setDoc } from 'firebase/firestore/lite';
+import { getFirestore, query, collection, doc, getDoc, setDoc, getDocs } from 'firebase/firestore/lite';
 import { getAnalytics } from "firebase/analytics";
 import { getMessaging, onMessage } from "firebase/messaging";
 
@@ -67,6 +69,7 @@ const ProductsPage = (props) => {
   const [valueMany, setValueMany] = useState("type name here");
   const [costMany, setCostMany] = useState("type amount here");
   const [test, setTest] = useState([]);
+  const [shoppingListDates, setShoppingListDates] = useState();
   const [products, setProducts] = useState([
     { id: 1, name: "boots", price: 90, packed: false },
     { id: 2, name: "shoes", price: 89, packed: false },
@@ -206,14 +209,63 @@ const ProductsPage = (props) => {
         // },
       ];
       const objNewLists = Object.assign({}, newLists);
+      let d = new Date();
+d.setSeconds(0,0);
 
-let path = "dailySpecial/" +new Date();
+let path = "dailySpecial/" +d;
 
 
 
     const specialOfTheDay = doc(firestore, path);
     const docData = objNewLists;
     setDoc(specialOfTheDay, docData);
+  };
+
+  const testGetList = async () => {
+    let d = new Date();
+    d.setSeconds(0,0);
+    let path = "dailySpecial/" +d;
+
+
+
+    const specialOfTheDay = doc(firestore, path);
+    const mySnapshot = await getDoc(specialOfTheDay);
+    if(mySnapshot.exists()){
+      const docData = mySnapshot.data();
+      console.log('my data is' + JSON.stringify(docData));
+    }
+  };
+
+  const testGetLists = async () => {
+    const q = query(collection(firestore, "dailySpecial"));
+
+    const querySnapshot = await getDocs(q);
+  const maybeArray = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      maybeArray.push(doc.id);
+      console.log(doc.id, " => ", doc.data());
+    });
+    const resultlist = querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      return doc.id;
+    });
+const result = Object.values(querySnapshot);
+const anArray = result.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  return doc.id;
+});
+const something = Object.keys(result).map(([key, value]) => {
+  return {[key]: value};
+});
+const thing = Object.entries(something).map(([key, value]) => {
+  return {[key]: value};
+});
+console.log("ding" + result);
+console.log("dong" + resultlist);
+console.log("dynamo" + anArray);
+console.log("nowthis" + maybeArray);
+setShoppingListDates(maybeArray);
   };
 
   
@@ -723,7 +775,25 @@ let path = "dailySpecial/" +new Date();
             testSetLists()
           }
         >
-          {"test "}{" "}
+          {"test-------- "}{" "}
+        </button>
+        <button
+          className="DeleteBtn"
+          id="button"
+          onClick={() =>
+            testGetList()
+          }
+        >
+          {"GET"}{" "}
+        </button>
+        <button
+          className="DeleteBtn"
+          id="button"
+          onClick={() =>
+            testGetLists()
+          }
+        >
+          {"S"}{" "}
         </button>
 
 
@@ -737,6 +807,9 @@ let path = "dailySpecial/" +new Date();
           handleSubmit={handleSubmit}
           handleSubmitMany={handleSubmitMany}
         ></AddNew>
+        <PopUp simpleList={shoppingListDates}>
+
+        </PopUp>
 
         {/* <form onSubmit={handleSubmit} className="Card">
           <p className="CardTitle"> Add your products here: </p>
@@ -770,7 +843,16 @@ let path = "dailySpecial/" +new Date();
         {/* <AddProduct></AddProduct> */}
 
         <div className="Lists">
-          <div className="List">
+          <ShoppingList 
+          productListDefault={productListDefault} 
+          setLocal={setLocal} 
+          deleteProduct={deleteProduct} 
+          setNumber={setNumber}
+          setProductListSelected={setProductListSelected}
+          productListSelected={productListSelected}>
+            
+          </ShoppingList>
+          {/* <div className="List">
             <h5>Shopping List</h5>
             {productListSelected.map(function (
               prodObj
@@ -794,7 +876,7 @@ let path = "dailySpecial/" +new Date();
                 );
               }
             })}
-          </div>
+          </div> */}
           <AddFreeText setValueMany={setValueMany} handleSubmitMany={handleSubmitMany}/>
           <BottomMenu
             setLocal={setLocal}
