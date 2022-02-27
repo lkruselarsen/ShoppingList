@@ -50,7 +50,7 @@ const Product = (props) => {
           <NameLabel name={props.name} />
           <InputNumber
             id={props.id}
-            number={props.price}
+            number={props.quantity}
             setNumber={props.setNumber}
             setProducts={props.setProducts}
             products={props.products}
@@ -77,7 +77,7 @@ const Product = (props) => {
           {props.checked === true ? null : (
             <InputNumber
               id={props.id}
-              number={props.price}
+              number={props.quantity}
               setNumber={props.setNumber}
               setProducts={props.setProducts}
               products={props.products}

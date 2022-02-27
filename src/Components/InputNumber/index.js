@@ -14,7 +14,7 @@ const InputNumber = ({
   const stepUpNumber = (e) => {
     const newProducts = products.map((el) => {
       if (el.id === id) {
-        return { ...el, price: number + step };
+        return { ...el, quantity: parseInt(number) + step };
       }
       return el;
     });
@@ -23,7 +23,7 @@ const InputNumber = ({
   const stepDownNumber = (e) => {
     const newProducts = products.map((el) => {
       if (el.id === id) {
-        return { ...el, price: number - step };
+        return { ...el, quantity: number - step };
       }
       return el;
     });
@@ -102,7 +102,7 @@ const InputNumber = ({
     <StyledInputNumber>
       Amount:
       <div class="number-input" id={pim}>
-        <StyledInput type="number" value={number || ""} onChange={onChange} />
+        <StyledInput type="number" value={number || 0} onChange={onChange} />
 
         <div class="spinners">
           <button class="spinner decrement" onClick={stepDownNumber}>

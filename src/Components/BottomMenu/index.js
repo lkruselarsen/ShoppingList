@@ -34,7 +34,7 @@ const BottomMenu = (props) => {
                     setProducts={props.setLocal}
                     id={prodObj.id}
                     name={prodObj.name}
-                    price={prodObj.price}
+                    quantity={prodObj.quantity}
                     checked={prodObj.packed}
                     deleteProduct={props.deleteProduct(prodObj.id)}
                     
