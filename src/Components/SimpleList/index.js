@@ -1,6 +1,6 @@
 
 import React from "react";
-import { StyledSimpleList } from "./styles";
+import { StyledSimpleList, StyledSimpleEntry } from "./styles";
 
 const SimpleList = ({simpleList}) => {
   return (
@@ -10,8 +10,8 @@ const SimpleList = ({simpleList}) => {
           {simpleList.map(function (
             prodObj
           ) {
-              return (
-<p>{prodObj}</p>
+              return (<StyledSimpleEntry>
+<p>{prodObj}</p></StyledSimpleEntry>
               );
             
           })}

@@ -17,8 +17,9 @@ const PopUp = (props) => {
             <StyledTogglePopUpExpanded onClick={() => setCount(count - 1)}>
               ➖
             </StyledTogglePopUpExpanded>
+            </div>
             <SimpleList simpleList={props.simpleList}></SimpleList>
-          </div>
+          
 
       </StyledPopUp>
     );
