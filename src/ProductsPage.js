@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, componentDidMount } from "react";
 import axios from "axios";
 
 import {
@@ -11,10 +11,51 @@ import {
   BottomMenu,
   AddNew,
   SearchBar,
+  AddFreeText,
 } from "./Components";
 
+// import { initializeApp } from 'firebase/app';
+// import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+
 import { getDefaultNormalizer } from "@testing-library/dom";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, doc, getDocs, setDoc } from 'firebase/firestore/lite';
+import { getAnalytics } from "firebase/analytics";
+import { getMessaging, onMessage } from "firebase/messaging";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDRXMIfcW9mjES7lhlLDSl7r7lCBKeLnz4",
+  authDomain: "shoppinglist-9a958.firebaseapp.com",
+  projectId: "shoppinglist-9a958",
+  storageBucket: "shoppinglist-9a958.appspot.com",
+  messagingSenderId: "1056273696717",
+  appId: "1:1056273696717:web:b74e07442a6a17cb7f6684",
+  measurementId: "G-FDRJ6YYEYM"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
+
 const endpoint = "https://lasselasse.free.beeceptor.com";
+
+
+// Follow this pattern to import other Firebase services
+// import { } from 'firebase/<service>';
+
+// TODO: Replace the following with your app's Firebase project configuration
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDRXMIfcW9mjES7lhlLDSl7r7lCBKeLnz4",
+//   authDomain: "shoppinglist-9a958.firebaseapp.com",
+//   projectId: "shoppinglist-9a958",
+//   storageBucket: "shoppinglist-9a958.appspot.com",
+//   messagingSenderId: "1056273696717",
+//   appId: "1:1056273696717:web:b74e07442a6a17cb7f6684",
+//   measurementId: "G-FDRJ6YYEYM"
+// };
+
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
 
 const ProductsPage = (props) => {
   const [input, setInput] = useState("");
@@ -38,6 +79,9 @@ const ProductsPage = (props) => {
   );
   const [productListSelected, setProductListSelected] = useState(
     JSON.parse(localStorage.getItem("selectedproducts") || "[]")
+  );
+  const [listofLists, setListofLists] = useState(
+    JSON.parse(localStorage.getItem("listoflists") || "[]")
   );
 
   const setNumber = (prodid, number) => {
@@ -121,14 +165,65 @@ const ProductsPage = (props) => {
     //console.log(test);
   };
   const setLocal = (props) => {
-    const newProdcuts = [props];
-    setProducts(newProdcuts);
+    let newProdcuts = [props];
+    // if(newProdcuts.length <= 1 || newProdcuts.value == undefined || newProdcuts === undefined || newProdcuts === null || !newProdcuts) {
+    //   console.log("hey this is the value of newProdcuts" + JSON.stringify(newProdcuts) + "and this is the value of props" + JSON.stringify(props))
+    //   newProdcuts = productListDefault;
+    // }
+
+  //  setProducts(newProdcuts);
     localStorage.setItem("products", JSON.stringify(props));
-    localStorage.setItem("selectedproducts", JSON.stringify(props));
+    const newSelected = props.filter(el=>el.packed==false);
+    localStorage.setItem("selectedproducts", JSON.stringify(newSelected));
     setProductListDefault(JSON.parse(localStorage.getItem("products") || "[]"));
     setProductListSelected(JSON.parse(localStorage.getItem("selectedproducts") || "[]"));
     postProducts(newProdcuts);
   };
+
+  const newLocal = () => {
+
+  }
+
+  const setLists = (props) => {
+    const newLists = [props];
+    setListofLists(newLists);
+    localStorage.setItem("listoflists", JSON.stringify(props));
+
+    setListofLists(JSON.parse(localStorage.getItem("listoflists") || "[]"));
+    // const specialOfTheDay = doc(firestore, 'dailySpecial/2021-09-16');
+    // postLists(newLists);
+    // const docData = newLists;
+    // setDoc(specialOfTheDay, docData);
+  };
+
+  const testSetLists = () => {
+    const newEntry= JSON.parse(localStorage.getItem("selectedproducts") || "[]")
+   
+      const newLists = [
+        ...JSON.parse(localStorage.getItem("selectedproducts") || "[]")
+        // {
+        // newName: newEntry
+        // },
+      ];
+      const objNewLists = Object.assign({}, newLists);
+
+let path = "dailySpecial/" +new Date();
+
+
+
+    const specialOfTheDay = doc(firestore, path);
+    const docData = objNewLists;
+    setDoc(specialOfTheDay, docData);
+  };
+
+  
+
+  // async function getCities(db) {
+  //   const citiesCol = collection(db, 'cities');
+  //   const citySnapshot = await getDocs(citiesCol);
+  //   const cityList = citySnapshot.docs.map(doc => doc.data());
+  //   console.log(cityList);
+  // };
   const updateInput = (e) => {
     const searchInput = e.target.value;
     const filtered = productListDefault.filter((product) => {
@@ -151,7 +246,7 @@ const ProductsPage = (props) => {
       {
         tempNum = 1;
       };
-    const newProdcuts = [
+    const newProducts = [
       ...JSON.parse(localStorage.getItem("products") || "[]"),
       {
         name: name,
@@ -160,11 +255,54 @@ const ProductsPage = (props) => {
         packed: false,
       },
     ];
+    setProductListDefault(newProducts);
+    setLocal(newProducts);
+    const newSelected = newProducts.filter(el=>el.packed==false);
+
+
     //  setProducts(newProdcuts);
-    setProductListDefault(newProdcuts);
-    setProductListSelected(newProdcuts);
-    setLocal(newProdcuts);
+    
+
+    setProductListSelected(newSelected);
+    
   };
+//   const addLists = () => {
+//    const newEntry= JSON.parse(localStorage.getItem("productListSelected") || "[]")
+   
+//   //  const entries= localStorage.getItem("listoflists").map((obj) =>  {
+//   //  position: obj.index + 1,  obj
+// setLists();
+//     // const newEntry= {obj1:{
+//     //   name: "cheddar 🧀",
+//     //   price: "",
+//     //   unit: "grams",
+//     //   id:
+//     //     1 +
+//     //     JSON.parse(localStorage.getItem("products") || "[]").length,
+//     //   packed: false,
+//     // },
+//     // obj:{
+//     //   name: "blue cheese 🧀",
+//     //   price: "",
+//     //   unit: "grams",
+//     //   id:
+//     //     1 +
+//     //     JSON.parse(localStorage.getItem("products") || "[]").length,
+//     //   packed: false,
+//     // }
+  
+  
+//     // const newName=localStorage.getItem("listoflists").length;
+//     // const newLists = [
+//     //   ...JSON.parse(localStorage.getItem("listoflists") || "[]"),
+//     //   {
+//     //   newName: newEntry
+//     //   },
+//     // ];
+//     //  setProducts(newProdcuts);
+//   //  setListofLists(newLists);
+//    // setLists(newLists);
+//   };
 
   const addMultiple = (props) => {
     const newProducts = [...props];
@@ -196,7 +334,24 @@ const ProductsPage = (props) => {
     );
     if (status === 200) {
       console.log(JSON.stringify(data.record));
+      data.record.forEach(product=> product.quantity=0);
       setLocal(data.record);
+    }
+  };
+  const fetchLists = async () => {
+    let config = {
+      headers: {
+        "X-Master-Key":
+          "$2b$10$5P3FcWZ8/sWO2B.rkxMBFeqIWovFuTMPOexSxizuzdqUbpjUP5XFS",
+      },
+    };
+    const { data, status } = await axios.get(
+      "https://api.jsonbin.io/v3/b/62050a12227c3007d478e35d",
+      config
+    );
+    if (status === 200) {
+      console.log(JSON.stringify(data.record));
+      setLists(data.record);
     }
   };
   const postProducts = async () => {
@@ -209,8 +364,26 @@ const ProductsPage = (props) => {
     };
     axios
       .put(
-        "https://api.jsonbin.io/v3/b/6141b50d4a82881d6c4f5417",
+        "https://api.jsonbin.io/v3/b/6141b50d4a82881d6c4f5417/8",
         localStorage.getItem("products"),
+        config
+      )
+      .then(function (response) {
+        console.log(JSON.stringify(response));
+      });
+  };
+  const postLists = async (props) => {
+    let config = {
+      headers: {
+        "X-Master-Key":
+          "$2b$10$5P3FcWZ8/sWO2B.rkxMBFeqIWovFuTMPOexSxizuzdqUbpjUP5XFS",
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .put(
+        "https://api.jsonbin.io/b/62050a12227c3007d478e35d",
+        props,
         config
       )
       .then(function (response) {
@@ -219,9 +392,16 @@ const ProductsPage = (props) => {
   };
 
   useEffect(() => {
-    //  postProducts();
+      postProducts();
     fetchProducts();
+   // fetchLists();
   }, []);
+
+//   componentDidMount(() => {
+//     postProducts();
+//   fetchProducts();
+//  // fetchLists();
+// });
 
   // let req = new XMLHttpRequest();
 
@@ -263,7 +443,61 @@ const ProductsPage = (props) => {
         {/* <button className="DeleteBtn" onClick={() => fetchProducts()}>
           {"Fetch "}{" "}
         </button> */}
-
+{/* 
+        <button
+          className="DeleteBtn"
+          id="button"
+          onClick={() =>
+            setListofLists([
+              {
+                name: "Parmesan 🧀",
+                price: "",
+                unit: "grams",
+                id:
+                  1 +
+                  JSON.parse(localStorage.getItem("products") || "[]").length,
+                packed: false,
+              },
+              {
+                name: "Cherries 🍒 ",
+                price: "",
+                unit: "grams",
+                id:
+                  2 +
+                  JSON.parse(localStorage.getItem("products") || "[]").length,
+                packed: true,
+              }, 
+                {
+                  name: "Parmesan 🧀",
+                  price: "",
+                  unit: "grams",
+                  id:
+                    1 +
+                    JSON.parse(localStorage.getItem("products") || "[]").length,
+                  packed: false,
+                },
+                {
+                  name: "Cherries 🍒 ",
+                  price: "",
+                  unit: "grams",
+                  id:
+                    2 +
+                    JSON.parse(localStorage.getItem("products") || "[]").length,
+                  packed: true,
+                }])
+          }
+        >
+          {"---- "}{" "}
+        </button> */}
+        {/* <button
+          className="DeleteBtn"
+          id="button"
+          onClick={() =>
+            addLists()
+          }
+        >
+          {"AddLists "}{" "}
+        </button> */}
         <button
           className="DeleteBtn"
           id="button"
@@ -480,8 +714,18 @@ const ProductsPage = (props) => {
             ])
           }
         >
-          {"eee "}{" "}
+          {"aaaaaaaaaaaaaaaaaaa "}{" "}
         </button>
+        <button
+          className="DeleteBtn"
+          id="button"
+          onClick={() =>
+            testSetLists()
+          }
+        >
+          {"test "}{" "}
+        </button>
+
 
         <AddNew
           value={value}
@@ -535,11 +779,11 @@ const ProductsPage = (props) => {
                 return (
                   <Product
                     // products={productListDefault}
-                    products={productListSelected}
+                    products={productListDefault}
                     setProducts={setLocal}
                     id={prodObj.id}
                     name={prodObj.name}
-                    price={prodObj.price}
+                    quantity={prodObj.quantity}
                     checked={prodObj.packed}
                     deleteProduct={(e) => deleteProduct(prodObj.id)}
                     unit={prodObj.unit}
@@ -551,7 +795,7 @@ const ProductsPage = (props) => {
               }
             })}
           </div>
-
+          <AddFreeText setValueMany={setValueMany} handleSubmitMany={handleSubmitMany}/>
           <BottomMenu
             setLocal={setLocal}
             deleteProduct={deleteProduct}
