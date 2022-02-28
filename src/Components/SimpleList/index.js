@@ -2,7 +2,7 @@
 import React from "react";
 import { StyledSimpleList, StyledSimpleEntry } from "./styles";
 
-const SimpleList = ({simpleList}) => {
+const SimpleList = ({simpleList, clickEntry}) => {
   return (
     <StyledSimpleList>
           <div className="List">
@@ -10,7 +10,7 @@ const SimpleList = ({simpleList}) => {
           {simpleList.map(function (
             prodObj
           ) {
-              return (<StyledSimpleEntry>
+              return (<StyledSimpleEntry onClick={()=>clickEntry(prodObj)}> 
 <p>{prodObj}</p></StyledSimpleEntry>
               );
             
