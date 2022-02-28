@@ -18,7 +18,7 @@ const PopUp = (props) => {
               ➖
             </StyledTogglePopUpExpanded>
             </div>
-            <SimpleList simpleList={props.simpleList}></SimpleList>
+            <SimpleList simpleList={props.simpleList} clickEntry={props.clickEntry}></SimpleList>
           
 
       </StyledPopUp>

@@ -198,7 +198,49 @@ const ProductsPage = (props) => {
     // const docData = newLists;
     // setDoc(specialOfTheDay, docData);
   };
+const setThisToOldList = async (props) =>{
+  let path = "dailySpecial/" + props;
+  const specialOfTheDay = doc(firestore, path);
+  const mySnapshot = await getDoc(specialOfTheDay);
+  if(mySnapshot.exists()){
+    const docData = mySnapshot.data();
+    console.log('my data is' + JSON.stringify(docData));
+ 
 
+    const maybeArray = [];
+    const tempArray = [];
+    var result = Object.keys(docData);
+    var resultVal = Object.values(docData);
+    var resultVal2 = Object.values(docData).map((key) => [docData[key], docData[key]]);
+    var resultEntries = Object.entries(docData);
+    var result2 = result.map((key) => [Number(key), docData[key], docData[key]]);
+    var result3 = resultVal.map((key) => [Number(key), docData[key], docData[key]]);
+    result.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      maybeArray.push(doc.entries);
+    });
+console.log("this is the weird result " + result);
+console.log("this is the weird result2! " + result2);
+console.log("this is the weird resultVal! " + resultVal);
+console.log("this is the weird resultVal2! " + resultVal);
+console.log("this is the weird result3! " + result3);
+console.log("this is the weird resultEntries! " + resultEntries);
+console.log("this is the ProduclistSelected! " + productListSelected);
+console.log("this is the weird array " + maybeArray);
+ 
+
+
+//  THIS WILL ALL BE USED LATER
+      let newProducts = resultVal;
+      localStorage.setItem("products", JSON.stringify(newProducts));
+      const newSelected = newProducts.filter(el=>el.packed==false);
+      localStorage.setItem("selectedproducts", JSON.stringify(newSelected));
+      setProductListDefault(JSON.parse(localStorage.getItem("products") || "[]"));
+      setProductListSelected(JSON.parse(localStorage.getItem("selectedproducts") || "[]"));
+      postProducts(newProducts);
+
+  }
+};
   const testSetLists = () => {
     const newEntry= JSON.parse(localStorage.getItem("selectedproducts") || "[]")
    
@@ -211,6 +253,8 @@ const ProductsPage = (props) => {
       const objNewLists = Object.assign({}, newLists);
       let d = new Date();
 d.setSeconds(0,0);
+d = d.toString();
+d = d.slice(0, -31);
 
 let path = "dailySpecial/" +d;
 
@@ -224,6 +268,8 @@ let path = "dailySpecial/" +d;
   const testGetList = async () => {
     let d = new Date();
     d.setSeconds(0,0);
+    d = d.toString();
+    d = d.slice(0, -31);
     let path = "dailySpecial/" +d;
 
 
@@ -807,7 +853,7 @@ setShoppingListDates(maybeArray);
           handleSubmit={handleSubmit}
           handleSubmitMany={handleSubmitMany}
         ></AddNew>
-        <PopUp simpleList={shoppingListDates}>
+        <PopUp simpleList={shoppingListDates} clickEntry={setThisToOldList}>
 
         </PopUp>
 
