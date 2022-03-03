@@ -15,6 +15,7 @@ export const StyledSimpleEntry = styled.div`
 -webkit-appearance: none;
 justify-content: left;
   background: transparent;
+  text-align: left;
   margin: 1px 1px 1px 1px;
   padding: 1px 10px 1px 10px;
   border-radius: 2px;
