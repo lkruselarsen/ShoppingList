@@ -303,7 +303,7 @@ let path = "dailySpecial/" +d;
   const testArrayData = async (docThis) => {
 
  
-let docData =testDocData(docThis);
+    let docData = testDocData(docThis);
     const maybeArray = [];
     var result = Object.values(docData);
       result.forEach((doc) => {
@@ -336,16 +336,15 @@ let docData =testDocData(docThis);
         // doc.data() is never undefined for query doc snapshots
         maybeArray.push(doc);
       });
+      let titleString = doc1.id;
       maybeArray.map((el) => {
-        console.log("this is testGetMore MaybeArray.name " + el.name);}
+        titleString = titleString + " " + el.name;
+}
     )
     // 
-      return(maybeArray);
+      return titleString
   
   };
-  const testMaybeArray = (maybeArray1) => {
-
-  }
 
 
 const testGetLists = async () => {
@@ -362,42 +361,62 @@ const testGetLists = async () => {
       // doc.data() is never undefined for query doc snapshots
       return doc.id;
     });
-const result = Object.values(querySnapshot);
-const anArray = result.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  return doc.id;
-});
-const something = Object.keys(result).map(([key, value]) => {
-  return {[key]: value};
-});
-const thing = Object.entries(something).map(([key, value]) => {
-  return {[key]: value};
-});
+    const result = Object.values(querySnapshot);
 
 
-const outerArray = [];
-querySnapshot.forEach((doc) => {
-  const res = testGetMore(doc);
-  //const res = "lol";
-  outerArray.push(res);
-  // doc.data() is never undefined for query doc snapshots
-  // maybeArray.push(doc.id);
-  // console.log(doc.id, " => ", doc.data());
-  console.log("this is res " + JSON.stringify(res));
-  console.log("this is outer array " + JSON.stringify(outerArray));
-});
-
-outerArray.map((el) => {
-  console.log("this is outerArray el " + JSON.stringify(el));})
 
 
-console.log("ding" + result);
-console.log("dong" + resultlist);
-console.log("dynamo" + anArray);
-console.log("nowthis" + maybeArray);
-setShoppingListDates(maybeArray);
-  };
+    const outerArray = [];
+    const promise1 = new Promise(async ()=>{    
+      querySnapshot.forEach(async (doc) => {
+      const res = await testGetMore(doc);
+    
+      const promise2 = new Promise(async ()=>{
+        outerArray.push(JSON.stringify(res))
+      });
+    
+         
+           if(Object.values(querySnapshot.docs).length === outerArray.length){
 
+            setShoppingListDates(outerArray);
+           }
+    });});
+   
+    // console.log("this is Gouter array " + JSON.stringify(outerArray));
+    // console.log("this is Gouter array " + outerArray);
+    // PUT THIS BACK IN
+    // querySnapshot.forEach(async (doc) => {
+    //   const res = await testGetMore(doc);
+    //   //const res = "lol";
+    //   // outerArray.push(JSON.stringify(res));
+    //   PushIt(outerArray, JSON.stringify(res));
+    //   // doc.data() is never undefined for query doc snapshots
+    //   // maybeArray.push(doc.id);
+    //   // console.log(doc.id, " => ", doc.data());
+    //   console.log("this is res " + JSON.stringify(res));
+    //   console.log("this is outer array " + JSON.stringify(outerArray));
+    // });
+
+
+
+  // console.log("this is Pouter array " + outerArray);
+  // console.log("this is Pouter array stringified " + JSON.stringify(outerArray));
+  // console.log("ding" + result);
+  // console.log("dong" + resultlist);
+  // console.log("nowthis" + maybeArray);
+  // setShoppingListDates(maybeArray);
+};
+const ArrayIt = (theArray, theQ)=>{    
+  theQ.forEach(async (doc) => {
+  const res = await testGetMore(doc);
+
+  PushIt(theArray, JSON.stringify(res));
+
+      console.log("this is res " + JSON.stringify(res));
+       console.log("this is outer array " + JSON.stringify(theArray));
+});}
+
+const PushIt = (someArray, someData)=>{someArray.push(someData);}
   
 
   // async function getCities(db) {

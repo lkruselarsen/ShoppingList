@@ -22,19 +22,19 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const firestore = getFirestore(app);
 
-const specialOfTheDay = doc(firestore, 'dailySpecial/2021-09-15');
-function writeDailySpecial(){
-const docData = {
-  description: 'A delicious vanilla latte',
-  price: 3.99,
-  milk: 'Whole',
-  vegan: false,
-};
-setDoc(specialOfTheDay, docData);
-}
+// const specialOfTheDay = doc(firestore, 'dailySpecial/2021-09-15');
+// function writeDailySpecial(){
+// const docData = {
+//   description: 'A delicious vanilla latte',
+//   price: 3.99,
+//   milk: 'Whole',
+//   vegan: false,
+// };
+// setDoc(specialOfTheDay, docData);
+// }
 
-console.log('Hello there, Firestore!');
-writeDailySpecial();
+// console.log('Hello there, Firestore!');
+// writeDailySpecial();
 
 
 // const messaging = getMessaging(app);
