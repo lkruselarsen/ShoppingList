@@ -204,7 +204,8 @@ const setThisToOldList = async (props) =>{
   const mySnapshot = await getDoc(specialOfTheDay);
   if(mySnapshot.exists()){
     const docData = mySnapshot.data();
-    console.log('my data is' + JSON.stringify(docData));
+    console.log('docData is' + JSON.stringify(docData));
+  
  
 
     const maybeArray = [];
@@ -218,13 +219,15 @@ const setThisToOldList = async (props) =>{
     result.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       maybeArray.push(doc.entries);
+
     });
-console.log("this is the weird result " + result);
+console.log("this is the weird Object.keys(docData) " + result);
 console.log("this is the weird result2! " + result2);
 console.log("this is the weird resultVal! " + resultVal);
+
 console.log("this is the weird resultVal2! " + resultVal);
 console.log("this is the weird result3! " + result3);
-console.log("this is the weird resultEntries! " + resultEntries);
+console.log("this is the weird Object.entries(docData)! " + resultEntries);
 console.log("this is the ProduclistSelected! " + productListSelected);
 console.log("this is the weird array " + maybeArray);
  
@@ -282,11 +285,74 @@ let path = "dailySpecial/" +d;
     }
   };
 
-  const testGetLists = async () => {
+
+  const testDocData = async (doc1) => {
+    let path = "dailySpecial/" +doc1.id;
+    console.log("this is path "+path);
+    const specialOfTheDay = doc(firestore, path);
+    const mySnapshot = await getDoc(specialOfTheDay);
+    console.log("this is snapshot.data " + JSON.stringify(mySnapshot.data()));
+ 
+    let docData;
+    if(mySnapshot.exists()){
+    docData = mySnapshot.data();
+    }
+      return(docData);
+  
+  };
+  const testArrayData = async (docThis) => {
+
+ 
+let docData =testDocData(docThis);
+    const maybeArray = [];
+    var result = Object.values(docData);
+      result.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        maybeArray.push(doc);
+      });
+      maybeArray.map((el) => {
+        console.log("this is testGetMore MaybeArray.name " + el.name);}
+    )
+    // 
+      return(maybeArray);
+  
+  };
+
+
+  const testGetMore = async (doc1) => {
+    let path = "dailySpecial/" +doc1.id;
+    console.log("this is path "+path);
+    const specialOfTheDay = doc(firestore, path);
+    const mySnapshot = await getDoc(specialOfTheDay);
+    console.log("this is snapshot.data " + JSON.stringify(mySnapshot.data()));
+ 
+    let docData;
+    if(mySnapshot.exists()){
+    docData = mySnapshot.data();
+    }
+    const maybeArray = [];
+    var result = Object.values(docData);
+      result.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        maybeArray.push(doc);
+      });
+      maybeArray.map((el) => {
+        console.log("this is testGetMore MaybeArray.name " + el.name);}
+    )
+    // 
+      return(maybeArray);
+  
+  };
+  const testMaybeArray = (maybeArray1) => {
+
+  }
+
+
+const testGetLists = async () => {
     const q = query(collection(firestore, "dailySpecial"));
 
     const querySnapshot = await getDocs(q);
-  const maybeArray = [];
+    const maybeArray = [];
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       maybeArray.push(doc.id);
@@ -307,6 +373,24 @@ const something = Object.keys(result).map(([key, value]) => {
 const thing = Object.entries(something).map(([key, value]) => {
   return {[key]: value};
 });
+
+
+const outerArray = [];
+querySnapshot.forEach((doc) => {
+  const res = testGetMore(doc);
+  //const res = "lol";
+  outerArray.push(res);
+  // doc.data() is never undefined for query doc snapshots
+  // maybeArray.push(doc.id);
+  // console.log(doc.id, " => ", doc.data());
+  console.log("this is res " + JSON.stringify(res));
+  console.log("this is outer array " + JSON.stringify(outerArray));
+});
+
+outerArray.map((el) => {
+  console.log("this is outerArray el " + JSON.stringify(el));})
+
+
 console.log("ding" + result);
 console.log("dong" + resultlist);
 console.log("dynamo" + anArray);
@@ -492,6 +576,7 @@ setShoppingListDates(maybeArray);
   useEffect(() => {
       postProducts();
     fetchProducts();
+    testGetLists()
    // fetchLists();
   }, []);
 
