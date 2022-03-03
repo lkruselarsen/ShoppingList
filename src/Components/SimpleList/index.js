@@ -11,7 +11,8 @@ const SimpleList = ({simpleList, clickEntry}) => {
             prodObj
           ) {
               return (<StyledSimpleEntry onClick={()=>clickEntry(prodObj)}> 
-<p>{prodObj}</p></StyledSimpleEntry>
+<p>{prodObj}</p> 
+<p>{prodObj.name}</p></StyledSimpleEntry>
               );
             
           })}
