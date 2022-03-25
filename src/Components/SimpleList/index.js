@@ -10,7 +10,7 @@ const SimpleList = ({simpleList, clickEntry}) => {
           {simpleList.map(function (
             prodObj
           ) {
-              return (<StyledSimpleEntry onClick={()=>clickEntry(prodObj.id)}> 
+              return (<StyledSimpleEntry onClick={()=>clickEntry(prodObj)}> 
 {/* <p>{prodObj.data}</p>  */}
 
 {prodObj.data.map(element => {
