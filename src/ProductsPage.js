@@ -236,8 +236,11 @@ console.log("this is the weird array " + maybeArray);
 //  THIS WILL ALL BE USED LATER
       let newProducts = resultVal;
       localStorage.setItem("products", JSON.stringify(newProducts));
+
       const newSelected = newProducts.filter(el=>el.packed==false);
+
       localStorage.setItem("selectedproducts", JSON.stringify(newSelected));
+
       setProductListDefault(JSON.parse(localStorage.getItem("products") || "[]"));
       setProductListSelected(JSON.parse(localStorage.getItem("selectedproducts") || "[]"));
       postProducts(newProducts);
@@ -351,60 +354,18 @@ const testGetLists = async () => {
     const q = query(collection(firestore, "dailySpecial"));
 
     const querySnapshot = await getDocs(q);
-    const maybeArray = [];
+    const prevShoppingList = [];
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      maybeArray.push(doc.id);
-      console.log(doc.id, " => ", doc.data());
-    });
-    const resultlist = querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      return doc.id;
-    });
-    const result = Object.values(querySnapshot);
-
-
-
-
-    const outerArray = [];
-    const promise1 = new Promise(async ()=>{    
-      querySnapshot.forEach(async (doc) => {
-      const res = await testGetMore(doc);
-    
-      const promise2 = new Promise(async ()=>{
-        outerArray.push(JSON.stringify(res))
+      const data = doc.data();
+      prevShoppingList.push({id:doc.id, data:Object.values(data)
       });
-    
-         
-           if(Object.values(querySnapshot.docs).length === outerArray.length){
+  
+    });
+    if(prevShoppingList.length >0){
 
-            setShoppingListDates(outerArray);
-           }
-    });});
-   
-    // console.log("this is Gouter array " + JSON.stringify(outerArray));
-    // console.log("this is Gouter array " + outerArray);
-    // PUT THIS BACK IN
-    // querySnapshot.forEach(async (doc) => {
-    //   const res = await testGetMore(doc);
-    //   //const res = "lol";
-    //   // outerArray.push(JSON.stringify(res));
-    //   PushIt(outerArray, JSON.stringify(res));
-    //   // doc.data() is never undefined for query doc snapshots
-    //   // maybeArray.push(doc.id);
-    //   // console.log(doc.id, " => ", doc.data());
-    //   console.log("this is res " + JSON.stringify(res));
-    //   console.log("this is outer array " + JSON.stringify(outerArray));
-    // });
-
-
-
-  // console.log("this is Pouter array " + outerArray);
-  // console.log("this is Pouter array stringified " + JSON.stringify(outerArray));
-  // console.log("ding" + result);
-  // console.log("dong" + resultlist);
-  // console.log("nowthis" + maybeArray);
-  // setShoppingListDates(maybeArray);
+      setShoppingListDates(prevShoppingList);
+     }
 };
 const ArrayIt = (theArray, theQ)=>{    
   theQ.forEach(async (doc) => {
