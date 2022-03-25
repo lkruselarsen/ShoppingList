@@ -199,37 +199,25 @@ const ProductsPage = (props) => {
     // setDoc(specialOfTheDay, docData);
   };
 const setThisToOldList = async (props) =>{
-  let path = "dailySpecial/" + props;
-  const specialOfTheDay = doc(firestore, path);
-  const mySnapshot = await getDoc(specialOfTheDay);
-  if(mySnapshot.exists()){
-    const docData = mySnapshot.data();
-    console.log('docData is' + JSON.stringify(docData));
-  
- 
+
+
+
+
+    const docData = props.data;
+
 
     const maybeArray = [];
-    const tempArray = [];
+
     var result = Object.keys(docData);
     var resultVal = Object.values(docData);
-    var resultVal2 = Object.values(docData).map((key) => [docData[key], docData[key]]);
-    var resultEntries = Object.entries(docData);
-    var result2 = result.map((key) => [Number(key), docData[key], docData[key]]);
-    var result3 = resultVal.map((key) => [Number(key), docData[key], docData[key]]);
+
+
     result.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       maybeArray.push(doc.entries);
 
     });
-console.log("this is the weird Object.keys(docData) " + result);
-console.log("this is the weird result2! " + result2);
-console.log("this is the weird resultVal! " + resultVal);
 
-console.log("this is the weird resultVal2! " + resultVal);
-console.log("this is the weird result3! " + result3);
-console.log("this is the weird Object.entries(docData)! " + resultEntries);
-console.log("this is the ProduclistSelected! " + productListSelected);
-console.log("this is the weird array " + maybeArray);
  
 
 
@@ -245,7 +233,7 @@ console.log("this is the weird array " + maybeArray);
       setProductListSelected(JSON.parse(localStorage.getItem("selectedproducts") || "[]"));
       postProducts(newProducts);
 
-  }
+  
 };
   const testSetLists = () => {
     const newEntry= JSON.parse(localStorage.getItem("selectedproducts") || "[]")
